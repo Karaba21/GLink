@@ -16,30 +16,30 @@ interface Product {
 const products: Product[] = [
   {
     id: 1,
-    name: 'Solución Empresarial Premium',
-    description: 'Transforma tu negocio con tecnología de vanguardia. Nuestra solución integral está diseñada para optimizar procesos, incrementar la productividad y llevar tu empresa al siguiente nivel digital.',
-    price: 'Desde $999/mes',
+    name: 'Huevera',
+    description: 'Solución innovadora para el almacenamiento y organización de huevos. Diseñada con materiales de alta calidad que garantizan la frescura y protección de tus productos.',
+    price: 'Consultar precio',
     features: [
-      'Integración completa con sistemas existentes',
-      'Soporte técnico 24/7 dedicado',
-      'Actualizaciones automáticas y seguridad avanzada',
-      'Escalabilidad garantizada para tu crecimiento',
+      'Diseño ergonómico y funcional',
+      'Materiales de alta calidad',
+      'Fácil limpieza y mantenimiento',
+      'Protección óptima para tus productos',
     ],
-    image: '/product1.jpg',
+    image: '/huevera.jpeg',
     gradient: 'from-green-500 via-green-600 to-green-700',
   },
   {
     id: 2,
-    name: 'Plataforma de Innovación Conectada',
-    description: 'Conecta tu mundo con soluciones inteligentes que se adaptan a ti. Diseñado pensando en la experiencia del usuario, nuestro producto combina elegancia, funcionalidad y rendimiento excepcional.',
-    price: 'Desde $799/mes',
+    name: 'Producto2',
+    description: 'Producto de excelencia diseñado para satisfacer tus necesidades. Combina funcionalidad, durabilidad y un diseño moderno que se adapta a cualquier entorno.',
+    price: 'Consultar precio',
     features: [
-      'Interfaz intuitiva y fácil de usar',
-      'Compatibilidad multiplataforma total',
-      'Análisis en tiempo real y reportes detallados',
-      'Personalización completa según tus necesidades',
+      'Calidad superior garantizada',
+      'Diseño versátil y moderno',
+      'Resistente y duradero',
+      'Solución completa para tus necesidades',
     ],
-    image: '/product2.jpg',
+    image: '/producto2.jpeg',
     gradient: 'from-green-400 via-green-500 to-green-600',
   },
 ];
@@ -74,7 +74,7 @@ export default function Productos() {
         </div>
 
         {/* Products Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+        <div className="flex flex-col gap-8 lg:gap-12">
           {products.map((product, index) => (
             <div
               key={product.id}
@@ -84,9 +84,9 @@ export default function Productos() {
             >
               {/* Main Card */}
               <div
-                className={`relative bg-gray-800 rounded-3xl p-8 shadow-2xl transition-all duration-500 ${
+                className={`relative bg-gray-800 rounded-3xl p-6 lg:p-8 shadow-2xl transition-all duration-500 ${
                   hoveredProduct === product.id
-                    ? 'shadow-green-500/40 scale-105'
+                    ? 'shadow-green-500/40 scale-[1.02]'
                     : 'shadow-gray-900/50'
                 }`}
               >
@@ -95,23 +95,23 @@ export default function Productos() {
                   className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${product.gradient} opacity-0 group-hover:opacity-20 transition-opacity duration-500 blur-xl`}
                 ></div>
 
-                {/* Content */}
-                <div className="relative z-10">
-                  {/* Product Image Placeholder */}
+                {/* Content - Horizontal Layout */}
+                <div className="relative z-10 flex flex-col lg:flex-row gap-6 lg:gap-8">
+                  {/* Product Image */}
                   <div
-                    className={`relative h-64 mb-6 rounded-2xl bg-gradient-to-br ${product.gradient} overflow-hidden shadow-xl shadow-green-500/20 group-hover:shadow-green-500/40 transition-all duration-500`}
+                    className={`relative w-full lg:w-80 h-64 lg:h-64 flex-shrink-0 rounded-2xl overflow-hidden shadow-xl shadow-green-500/20 group-hover:shadow-green-500/40 transition-all duration-500`}
                   >
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="text-white text-6xl font-bold opacity-30">
-                        {product.id}
-                      </div>
-                    </div>
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="w-full h-full object-cover"
+                    />
                     {/* Shine Effect */}
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
                   </div>
 
                   {/* Product Info */}
-                  <div className="space-y-4">
+                  <div className="flex-1 space-y-4">
                     <h3 className="text-2xl md:text-3xl font-bold text-gray-100 group-hover:text-green-400 transition-colors">
                       {product.name}
                     </h3>
@@ -132,7 +132,7 @@ export default function Productos() {
                     </ul>
 
                     {/* Price and CTA */}
-                    <div className="flex items-center justify-between pt-6 border-t border-gray-700">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pt-6 border-t border-gray-700 gap-4">
                       <div>
                         <p className="text-sm text-gray-400 mb-1">Precio</p>
                         <p className="text-2xl font-bold text-gradient">{product.price}</p>
