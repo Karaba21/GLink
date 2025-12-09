@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
+import WhatsAppButton from "@/components/WhatsAppButton";
 
 export const metadata: Metadata = {
   title: "GLink - Innovación Conectada",
@@ -15,7 +16,10 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body>
-        <CartProvider>{children}</CartProvider>
+        <CartProvider>
+          {children}
+          <WhatsAppButton />
+        </CartProvider>
       </body>
     </html>
   );

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { ShoppingCart, User, Menu, X } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useCart } from '@/context/CartContext';
 
 export default function Navbar() {
@@ -37,11 +38,15 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-3 group">
-            <div className="relative">
-              <div className="w-12 h-12 bg-gradient-to-br from-green-600 to-green-800 rounded-lg flex items-center justify-center shadow-lg shadow-green-500/30 group-hover:shadow-green-500/50 transition-all duration-300 group-hover:scale-110">
-                <span className="text-white font-bold text-xl">G</span>
-              </div>
-              <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full animate-pulse"></div>
+            <div className="relative w-12 h-12 transition-all duration-300 group-hover:scale-110">
+              <Image
+                src="/logosinfondo.png"
+                alt="GLink Logo"
+                width={48}
+                height={48}
+                className="object-contain"
+                priority
+              />
             </div>
             <span className="text-2xl font-bold text-gray-100 group-hover:text-green-400 transition-colors">
               GLink
