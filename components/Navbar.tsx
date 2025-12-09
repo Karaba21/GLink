@@ -3,10 +3,12 @@
 import { useState, useEffect } from 'react';
 import { ShoppingCart, User, Menu, X } from 'lucide-react';
 import Link from 'next/link';
+import { useCart } from '@/context/CartContext';
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { cartCount } = useCart();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -26,11 +28,10 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? 'bg-gray-900/95 backdrop-blur-md shadow-lg shadow-green-500/20'
-          : 'bg-transparent'
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
+        ? 'bg-gray-900/95 backdrop-blur-md shadow-lg shadow-green-500/20'
+        : 'bg-transparent'
+        }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
@@ -83,12 +84,17 @@ export default function Navbar() {
               Contacto
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-green-400 group-hover:w-full transition-all duration-300"></span>
             </button>
-            <button className="relative p-2 text-gray-300 hover:text-green-400 transition-colors group">
+            <Link
+              href="/carrito"
+              className="relative p-2 text-gray-300 hover:text-green-400 transition-colors group"
+            >
               <ShoppingCart className="w-6 h-6" />
-              <span className="absolute top-0 right-0 w-5 h-5 bg-green-500 text-white text-xs rounded-full flex items-center justify-center font-bold shadow-lg shadow-green-500/50">
-                0
-              </span>
-            </button>
+              {cartCount > 0 && (
+                <span className="absolute top-0 right-0 w-5 h-5 bg-green-500 text-white text-xs rounded-full flex items-center justify-center font-bold shadow-lg shadow-green-500/50">
+                  {cartCount}
+                </span>
+              )}
+            </Link>
             <button className="p-2 text-gray-300 hover:text-green-400 transition-colors">
               <User className="w-6 h-6" />
             </button>
@@ -139,12 +145,17 @@ export default function Navbar() {
               Contacto
             </button>
             <div className="flex items-center space-x-4 pt-4 border-t border-green-500/30">
-              <button className="relative p-2 text-gray-300">
+              <Link
+                href="/carrito"
+                className="relative p-2 text-gray-300"
+              >
                 <ShoppingCart className="w-6 h-6" />
-                <span className="absolute top-0 right-0 w-5 h-5 bg-green-500 text-white text-xs rounded-full flex items-center justify-center font-bold">
-                  0
-                </span>
-              </button>
+                {cartCount > 0 && (
+                  <span className="absolute top-0 right-0 w-5 h-5 bg-green-500 text-white text-xs rounded-full flex items-center justify-center font-bold">
+                    {cartCount}
+                  </span>
+                )}
+              </Link>
               <button className="p-2 text-gray-300">
                 <User className="w-6 h-6" />
               </button>
