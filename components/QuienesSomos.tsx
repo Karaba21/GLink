@@ -29,7 +29,7 @@ export default function QuienesSomos() {
   return (
     <section
       id="quienes-somos"
-      className="relative py-24 px-4 sm:px-6 lg:px-8 overflow-hidden bg-gradient-to-b from-gray-900 to-gray-800"
+      className="relative py-24 px-4 sm:px-6 lg:px-8 overflow-hidden"
     >
       {/* Background Effects */}
       <div className="absolute inset-0 overflow-hidden">
@@ -40,11 +40,11 @@ export default function QuienesSomos() {
       <div className="relative z-10 max-w-7xl mx-auto">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-100 mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
             <span className="text-gradient">Quienes Somos</span>
           </h2>
           <div className="w-24 h-1 bg-gradient-to-r from-green-500 to-green-400 mx-auto rounded-full shadow-lg shadow-green-500/50 mb-6"></div>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Somos un equipo apasionado por la tecnología y comprometido con el éxito de nuestros clientes
           </p>
         </div>

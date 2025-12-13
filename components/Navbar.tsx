@@ -48,7 +48,7 @@ export default function Navbar() {
                 priority
               />
             </div>
-            <span className="text-2xl font-bold text-gray-100 group-hover:text-green-400 transition-colors">
+            <span className={`text-2xl font-bold transition-colors ${isScrolled ? 'text-gray-100' : 'text-gray-900'} group-hover:text-green-400`}>
               GLink
             </span>
           </Link>
@@ -57,21 +57,21 @@ export default function Navbar() {
           <div className="hidden md:flex items-center space-x-8">
             <button
               onClick={() => scrollToSection('inicio')}
-              className="text-gray-300 hover:text-green-400 font-medium transition-colors relative group"
+              className={`${isScrolled ? 'text-gray-300' : 'text-gray-600'} hover:text-green-400 font-medium transition-colors relative group`}
             >
               Inicio
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-green-400 group-hover:w-full transition-all duration-300"></span>
             </button>
             <button
               onClick={() => scrollToSection('productos')}
-              className="text-gray-300 hover:text-green-400 font-medium transition-colors relative group"
+              className={`${isScrolled ? 'text-gray-300' : 'text-gray-600'} hover:text-green-400 font-medium transition-colors relative group`}
             >
               Productos
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-green-400 group-hover:w-full transition-all duration-300"></span>
             </button>
             <button
               onClick={() => scrollToSection('quienes-somos')}
-              className="text-gray-300 hover:text-green-400 font-medium transition-colors relative group"
+              className={`${isScrolled ? 'text-gray-300' : 'text-gray-600'} hover:text-green-400 font-medium transition-colors relative group`}
             >
               Quienes Somos
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-green-400 group-hover:w-full transition-all duration-300"></span>
@@ -84,14 +84,14 @@ export default function Navbar() {
             </button>
             <button
               onClick={() => scrollToSection('contacto')}
-              className="text-gray-300 hover:text-green-400 font-medium transition-colors relative group"
+              className={`${isScrolled ? 'text-gray-300' : 'text-gray-600'} hover:text-green-400 font-medium transition-colors relative group`}
             >
               Contacto
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-green-400 group-hover:w-full transition-all duration-300"></span>
             </button>
             <Link
               href="/carrito"
-              className="relative p-2 text-gray-300 hover:text-green-400 transition-colors group"
+              className={`relative p-2 ${isScrolled ? 'text-gray-300' : 'text-gray-600'} hover:text-green-400 transition-colors group`}
             >
               <ShoppingCart className="w-6 h-6" />
               {cartCount > 0 && (
@@ -100,14 +100,14 @@ export default function Navbar() {
                 </span>
               )}
             </Link>
-            <button className="p-2 text-gray-300 hover:text-green-400 transition-colors">
+            <button className={`p-2 ${isScrolled ? 'text-gray-300' : 'text-gray-600'} hover:text-green-400 transition-colors`}>
               <User className="w-6 h-6" />
             </button>
           </div>
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden p-2 text-gray-300"
+            className={`md:hidden p-2 ${isScrolled ? 'text-gray-300' : 'text-gray-600'}`}
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}

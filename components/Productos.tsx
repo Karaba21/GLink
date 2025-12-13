@@ -43,12 +43,12 @@ export default function Productos({ shopifyProducts = [] }: ProductosProps) {
         <div className="text-center mb-16">
           <div className="inline-flex items-center justify-center mb-4">
             <Sparkles className="w-8 h-8 text-green-500 mr-2" />
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-100">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
               Nuestros <span className="text-gradient">Productos</span>
             </h2>
           </div>
           <div className="w-24 h-1 bg-gradient-to-r from-green-500 to-green-400 mx-auto rounded-full shadow-lg shadow-green-500/50 mb-6"></div>
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             Descubre nuestras soluciones innovadoras diseñadas para transformar tu negocio
           </p>
         </div>
