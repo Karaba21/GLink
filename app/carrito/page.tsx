@@ -1,14 +1,42 @@
 'use client';
 
 import { useCart } from '@/context/CartContext';
-import { ShoppingCart, Trash2, ArrowLeft, CreditCard, Package, Minus, Plus } from 'lucide-react';
+import { ShoppingCart, Trash2, ArrowLeft, CreditCard, Package, Minus, Plus, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function CarritoPage() {
+    const router = useRouter();
     const { cart, removeItem, updateQuantity, checkoutUrl } = useCart();
     const [removingId, setRemovingId] = useState<string | null>(null);
     const [updatingId, setUpdatingId] = useState<string | null>(null);
+    const [loadingCheckout, setLoadingCheckout] = useState(false);
+
+    const handleCheckout = async () => {
+        setLoadingCheckout(true);
+        try {
+            const res = await fetch('/api/checkout', {
+                method: 'POST',
+            });
+
+            if (res.status === 401) {
+                router.push('/login');
+                return;
+            }
+
+            const data = await res.json();
+            if (data.checkoutUrl) {
+                window.location.href = data.checkoutUrl;
+            } else {
+                console.error('No checkout URL returned');
+            }
+        } catch (error) {
+            console.error('Error initiating checkout:', error);
+        } finally {
+            setLoadingCheckout(false);
+        }
+    };
 
     const handleRemove = async (lineId: string) => {
         setRemovingId(lineId);
@@ -44,7 +72,7 @@ export default function CarritoPage() {
     };
 
     return (
-        <div className="min-h-screen bg-gray-900 pt-24 pb-16">
+        <div className="min-h-screen pt-24 pb-16">
             {/* Background Effects */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 <div className="absolute top-20 left-1/4 w-96 h-96 bg-green-300/10 rounded-full blur-3xl"></div>
@@ -56,7 +84,7 @@ export default function CarritoPage() {
                 <div className="mb-8">
                     <Link
                         href="/"
-                        className="inline-flex items-center text-green-400 hover:text-green-300 transition-colors mb-4"
+                        className="inline-flex items-center text-green-600 hover:text-green-700 transition-colors mb-4"
                     >
                         <ArrowLeft className="w-5 h-5 mr-2" />
                         Volver a la tienda
@@ -66,8 +94,8 @@ export default function CarritoPage() {
                             <ShoppingCart className="w-7 h-7 text-white" />
                         </div>
                         <div>
-                            <h1 className="text-4xl font-bold text-gray-100">Tu Carrito</h1>
-                            <p className="text-gray-400 mt-1">
+                            <h1 className="text-4xl font-bold text-gray-900">Tu Carrito</h1>
+                            <p className="text-gray-600 mt-1">
                                 {isEmpty ? 'No hay productos' : `${cartLines.length} ${cartLines.length === 1 ? 'producto' : 'productos'}`}
                             </p>
                         </div>
@@ -204,13 +232,18 @@ export default function CarritoPage() {
                                 </div>
 
                                 <button
-                                    onClick={() => {
-                                        if (checkoutUrl) window.location.href = checkoutUrl;
-                                    }}
-                                    className="w-full px-6 py-4 bg-gradient-to-r from-green-600 to-green-500 text-white text-lg font-semibold rounded-xl hover:from-green-700 hover:to-green-600 transition-all duration-300 shadow-lg shadow-green-500/40 hover:shadow-green-500/60 hover:scale-105 transform flex items-center justify-center space-x-2"
+                                    onClick={handleCheckout}
+                                    disabled={loadingCheckout}
+                                    className="w-full px-6 py-4 bg-gradient-to-r from-green-600 to-green-500 text-white text-lg font-semibold rounded-xl hover:from-green-700 hover:to-green-600 transition-all duration-300 shadow-lg shadow-green-500/40 hover:shadow-green-500/60 hover:scale-105 transform flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
-                                    <CreditCard className="w-5 h-5" />
-                                    <span>Proceder al Pago</span>
+                                    {loadingCheckout ? (
+                                        <Loader2 className="w-5 h-5 animate-spin" />
+                                    ) : (
+                                        <>
+                                            <CreditCard className="w-5 h-5" />
+                                            <span>Proceder al Pago</span>
+                                        </>
+                                    )}
                                 </button>
 
                                 <p className="text-xs text-gray-400 text-center mt-4">

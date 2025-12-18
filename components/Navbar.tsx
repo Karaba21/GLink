@@ -1,15 +1,20 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { ShoppingCart, User, Menu, X } from 'lucide-react';
+import { ShoppingCart, User, Menu, X, LogOut } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname, useRouter } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
+import { useShopifyCustomer } from '@/hooks/useShopifyCustomer';
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { cartCount } = useCart();
+  const { customer } = useShopifyCustomer();
+  const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -20,11 +25,24 @@ export default function Navbar() {
   }, []);
 
   const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (pathname !== '/') {
+      router.push('/#' + sectionId);
+    } else {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     }
     setIsMobileMenuOpen(false);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/logout', { method: 'POST' });
+      window.location.href = '/login';
+    } catch (error) {
+      console.error('Logout failed', error);
+    }
   };
 
   return (
@@ -96,12 +114,28 @@ export default function Navbar() {
                 </span>
               )}
             </Link>
-            <Link
-              href="/registrate"
-              className={`p-2 ${isScrolled ? 'text-gray-300' : 'text-gray-600'} hover:text-green-400 transition-colors`}
-            >
-              <User className="w-6 h-6" />
-            </Link>
+
+            {customer ? (
+              <div className="flex items-center space-x-4">
+                <div className="w-10 h-10 rounded-full bg-green-600 flex items-center justify-center text-white font-bold cursor-pointer hover:bg-green-700 transition-colors">
+                  {customer.firstName?.charAt(0).toUpperCase()}{customer.lastName?.charAt(0).toUpperCase()}
+                </div>
+                <button
+                  onClick={handleLogout}
+                  className="p-2 text-gray-400 hover:text-red-400 transition-colors"
+                  title="Cerrar Sesión"
+                >
+                  <LogOut className="w-5 h-5" />
+                </button>
+              </div>
+            ) : (
+              <Link
+                href="/login"
+                className={`p-2 ${isScrolled ? 'text-gray-300' : 'text-gray-600'} hover:text-green-400 transition-colors`}
+              >
+                <User className="w-6 h-6" />
+              </Link>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -155,13 +189,29 @@ export default function Navbar() {
                   </span>
                 )}
               </Link>
-              <Link
-                href="/registrate"
-                className="p-2 text-gray-300"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                <User className="w-6 h-6" />
-              </Link>
+              {customer ? (
+                <div className="flex items-center space-x-2 text-gray-300">
+                  <div className="w-8 h-8 rounded-full bg-green-600 flex items-center justify-center text-white font-bold">
+                    {customer.firstName?.charAt(0).toUpperCase()}{customer.lastName?.charAt(0).toUpperCase()}
+                  </div>
+                  <span>{customer.firstName}</span>
+                  <button
+                    onClick={handleLogout}
+                    className="p-2 text-gray-400 hover:text-red-400 transition-colors ml-auto"
+                    title="Cerrar Sesión"
+                  >
+                    <LogOut className="w-5 h-5" />
+                  </button>
+                </div>
+              ) : (
+                <Link
+                  href="/login"
+                  className="p-2 text-gray-300"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <User className="w-6 h-6" />
+                </Link>
+              )}
             </div>
           </div>
         </div>

@@ -1,19 +1,52 @@
 'use client';
 
 import { useState } from 'react';
-import { Mail, Lock, User, ArrowRight } from 'lucide-react';
+import { Mail, Lock, User, ArrowRight, Loader2 } from 'lucide-react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function Registrate() {
+  const router = useRouter();
   const [formData, setFormData] = useState({
-    name: '',
+    firstName: '',
+    lastName: '',
     email: '',
     password: '',
+    acceptsMarketing: false,
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Aquí iría la lógica de registro
-    console.log('Registro:', formData);
+    setLoading(true);
+    setError('');
+    setSuccess('');
+
+    try {
+      const res = await fetch('/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || 'Error al registrarse');
+      }
+
+      setSuccess('¡Registro exitoso! Redirigiendo a inicio de sesión...');
+      setTimeout(() => {
+        router.push('/login');
+      }, 2000);
+
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -77,22 +110,52 @@ export default function Registrate() {
             <div className="p-8 md:p-12">
               <h3 className="text-2xl md:text-3xl font-bold text-gray-100 mb-2">Crear Cuenta</h3>
               <p className="text-gray-300 mb-8">Completa el formulario para comenzar</p>
-              
+
               <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
-                    Nombre Completo
-                  </label>
-                  <div className="relative">
-                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-                    <input
-                      type="text"
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full pl-10 pr-4 py-3 bg-gray-700 border border-gray-600 text-gray-100 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all placeholder-gray-400"
-                      placeholder="Juan Pérez"
-                      required
-                    />
+
+                {error && (
+                  <div className="bg-red-500/10 border border-red-500 text-red-500 p-3 rounded-xl text-sm">
+                    {error}
+                  </div>
+                )}
+                {success && (
+                  <div className="bg-green-500/10 border border-green-500 text-green-500 p-3 rounded-xl text-sm">
+                    {success}
+                  </div>
+                )}
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                      Nombre
+                    </label>
+                    <div className="relative">
+                      <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                      <input
+                        type="text"
+                        value={formData.firstName}
+                        onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                        className="w-full pl-10 pr-4 py-3 bg-gray-700 border border-gray-600 text-gray-100 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all placeholder-gray-400"
+                        placeholder="Juan"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                      Apellido
+                    </label>
+                    <div className="relative">
+                      <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                      <input
+                        type="text"
+                        value={formData.lastName}
+                        onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                        className="w-full pl-10 pr-4 py-3 bg-gray-700 border border-gray-600 text-gray-100 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all placeholder-gray-400"
+                        placeholder="Pérez"
+                        required
+                      />
+                    </div>
                   </div>
                 </div>
 
@@ -130,19 +193,42 @@ export default function Registrate() {
                   </div>
                 </div>
 
+                <div className="flex items-start space-x-3">
+                  <div className="flex items-center h-5">
+                    <input
+                      id="marketing"
+                      type="checkbox"
+                      checked={(formData as any).acceptsMarketing || false}
+                      onChange={(e) => setFormData({ ...formData, acceptsMarketing: e.target.checked } as any)}
+                      className="w-4 h-4 text-green-600 bg-gray-700 border-gray-600 rounded focus:ring-green-500 focus:ring-offset-gray-800"
+                    />
+                  </div>
+                  <label htmlFor="marketing" className="text-sm text-gray-300">
+                    Acepto recibir novedades y ofertas por email
+                  </label>
+                </div>
+
                 <button
                   type="submit"
-                  className="w-full py-4 bg-gradient-to-r from-green-600 to-green-500 text-white font-semibold rounded-xl shadow-lg shadow-green-500/30 hover:shadow-green-500/50 transition-all duration-300 hover:scale-105 transform flex items-center justify-center space-x-2"
+                  disabled={loading}
+                  className="w-full py-4 bg-gradient-to-r from-green-600 to-green-500 text-white font-semibold rounded-xl shadow-lg shadow-green-500/30 hover:shadow-green-500/50 transition-all duration-300 hover:scale-105 transform flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <span>Registrarse</span>
-                  <ArrowRight className="w-5 h-5" />
+                  {loading ? (
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                  ) : (
+                    <>
+                      <span>Registrarse</span>
+                      <ArrowRight className="w-5 h-5" />
+                    </>
+                  )}
                 </button>
+
 
                 <p className="text-center text-sm text-gray-300">
                   ¿Ya tienes cuenta?{' '}
-                  <a href="#" className="text-green-400 font-semibold hover:text-green-300">
+                  <Link href="/login" className="text-green-400 font-semibold hover:text-green-300">
                     Inicia Sesión
-                  </a>
+                  </Link>
                 </p>
               </form>
             </div>
