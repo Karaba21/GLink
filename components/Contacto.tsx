@@ -20,19 +20,19 @@ export default function Contacto() {
     {
       icon: Mail,
       title: 'Email',
-      content: 'contacto@glink.com',
-      link: 'mailto:contacto@glink.com',
+      content: 'glink.uy@gmail.com',
+      link: 'mailto:glink.uy@gmail.com',
     },
     {
       icon: Phone,
       title: 'Teléfono',
-      content: '+1 (555) 123-4567',
-      link: 'tel:+15551234567',
+      content: '+598 095 001 121',
+      link: 'tel:+59895001121',
     },
     {
       icon: MapPin,
       title: 'Ubicación',
-      content: 'Ciudad, País',
+      content: 'Montevideo, Uruguay',
       link: '#',
     },
   ];
@@ -97,9 +97,14 @@ export default function Contacto() {
                   <p className="text-green-100">Chat directo</p>
                 </div>
               </div>
-              <button className="w-full py-3 bg-white text-green-600 font-semibold rounded-xl hover:bg-green-50 transition-colors">
+              <a
+                href="https://wa.me/59895001121"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-3 bg-white text-green-600 font-semibold rounded-xl hover:bg-green-50 transition-colors flex items-center justify-center"
+              >
                 Abrir Chat
-              </button>
+              </a>
             </div>
           </div>
 

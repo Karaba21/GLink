@@ -1,31 +1,40 @@
 'use client';
 
-import { Target, Users, Award, Zap } from 'lucide-react';
+import { useState } from 'react';
+import { Target, Users, Award, Zap, ChevronDown, ChevronUp } from 'lucide-react';
 
 const values = [
   {
     icon: Target,
     title: 'Misión',
-    description: 'Proporcionar soluciones tecnológicas innovadoras que impulsen el crecimiento y la transformación digital de nuestros clientes.',
+    description: 'Brindamos soluciones innovadoras y prácticas para el hogar, diseñadas para mejorar la vida diaria con calidad, accesibilidad y confianza. Nos comprometemos a ofrecer una experiencia de compra transparente y cercana, siempre orientada a las necesidades reales de cada persona.',
   },
   {
     icon: Users,
     title: 'Visión',
-    description: 'Ser líderes en innovación tecnológica, reconocidos por nuestra excelencia y compromiso con el éxito de nuestros clientes.',
+    description: 'Aspiramos a ser una marca que inspire bienestar y modernidad, creando experiencias que conecten tecnología, simplicidad y sostenibilidad. Nuestro propósito es contribuir a hogares más eficientes y conscientes, impulsando un estilo de vida accesible y en armonía con las personas y el entorno.',
   },
   {
     icon: Award,
     title: 'Valores',
-    description: 'Comprometidos con la excelencia, la innovación constante y el servicio al cliente de clase mundial.',
+    description: 'En GLINK creemos en la confianza y la transparencia como base de todo lo que hacemos. Nos gusta estar cerca de nuestros clientes, por eso contamos con canales directos para conversar mano a mano y resolver cada duda. Innovamos con propósito, buscando soluciones simples que mejoren tu día a día, y lo hacemos con responsabilidad hacia las personas y el entorno. Queremos que la calidad sea premium para que cada experiencia con nosotros sea clara, fácil y agradable, porque tu satisfacción es nuestra prioridad',
   },
   {
     icon: Zap,
     title: 'Innovación',
-    description: 'Estamos a la vanguardia de la tecnología, siempre buscando nuevas formas de mejorar y optimizar.',
+    description: 'Ofrecemos productos novedosos para el mercado local, en vistas de generar una experiencia práctica y sobre todo ahorrar tiempo en la cocina.',
   },
 ];
 
 export default function QuienesSomos() {
+  const [expandedCards, setExpandedCards] = useState<number[]>([]);
+
+  const toggleCard = (index: number) => {
+    setExpandedCards((prev) =>
+      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
+    );
+  };
+
   return (
     <section
       id="quienes-somos"
@@ -96,13 +105,19 @@ export default function QuienesSomos() {
         </div>
 
         {/* Values Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-start">
           {values.map((value, index) => {
             const Icon = value.icon;
+            const isExpanded = expandedCards.includes(index);
+            const isLongText = value.description.length > 100;
+            const displayedText = isExpanded || !isLongText
+              ? value.description
+              : `${value.description.slice(0, 100)}...`;
+
             return (
               <div
                 key={index}
-                className="group relative bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-green-500/30 transition-all duration-300 hover:scale-105 transform"
+                className="group relative bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-green-500/30 transition-all duration-300 hover:scale-[1.02] transform flex flex-col"
               >
                 <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center mb-4 shadow-lg shadow-green-500/30 group-hover:shadow-green-500/50 transition-all duration-300 group-hover:scale-110">
                   <Icon className="w-8 h-8 text-white" />
@@ -110,7 +125,29 @@ export default function QuienesSomos() {
                 <h4 className="text-xl font-bold text-gray-100 mb-2 group-hover:text-green-400 transition-colors">
                   {value.title}
                 </h4>
-                <p className="text-gray-300 leading-relaxed">{value.description}</p>
+                <div>
+                  <p className="text-gray-300 leading-relaxed text-sm">
+                    {displayedText}
+                  </p>
+                </div>
+
+                {isLongText && (
+                  <button
+                    onClick={() => toggleCard(index)}
+                    className="mt-1 flex items-center text-green-400 text-sm font-semibold hover:text-green-300 transition-colors"
+                  >
+                    {isExpanded ? (
+                      <>
+                        Ver menos <ChevronUp className="ml-1 w-4 h-4" />
+                      </>
+                    ) : (
+                      <>
+                        Ver más <ChevronDown className="ml-1 w-4 h-4" />
+                      </>
+                    )}
+                  </button>
+                )}
+
                 {/* Hover effect */}
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-green-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
               </div>

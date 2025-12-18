@@ -4,7 +4,7 @@ import React from 'react';
 
 const WhatsAppButton = () => {
     // Número de ejemplo - el usuario puede cambiarlo más tarde
-    const phoneNumber = '5491123456789'; // Formato: código de país + número sin espacios ni símbolos
+    const phoneNumber = '59895001121'; // Formato: código de país + número sin espacios ni símbolos
     const message = '¡Hola! Me gustaría obtener más información.'; // Mensaje predeterminado
 
     const handleClick = () => {
