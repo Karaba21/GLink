@@ -76,12 +76,8 @@ export default function Navbar() {
               Quienes Somos
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-green-400 group-hover:w-full transition-all duration-300"></span>
             </button>
-            <button
-              onClick={() => scrollToSection('registrate')}
-              className="px-4 py-2 bg-gradient-to-r from-green-600 to-green-500 text-white rounded-lg font-medium hover:from-green-700 hover:to-green-600 transition-all duration-300 shadow-md shadow-green-500/30 hover:shadow-green-500/50 hover:scale-105"
-            >
-              Regístrate
-            </button>
+
+
             <button
               onClick={() => scrollToSection('contacto')}
               className={`${isScrolled ? 'text-gray-300' : 'text-gray-600'} hover:text-green-400 font-medium transition-colors relative group`}
@@ -100,9 +96,12 @@ export default function Navbar() {
                 </span>
               )}
             </Link>
-            <button className={`p-2 ${isScrolled ? 'text-gray-300' : 'text-gray-600'} hover:text-green-400 transition-colors`}>
+            <Link
+              href="/registrate"
+              className={`p-2 ${isScrolled ? 'text-gray-300' : 'text-gray-600'} hover:text-green-400 transition-colors`}
+            >
               <User className="w-6 h-6" />
-            </button>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -137,12 +136,7 @@ export default function Navbar() {
             >
               Quienes Somos
             </button>
-            <button
-              onClick={() => scrollToSection('registrate')}
-              className="block w-full text-left px-4 py-2 bg-gradient-to-r from-green-600 to-green-500 text-white rounded-lg font-medium"
-            >
-              Regístrate
-            </button>
+
             <button
               onClick={() => scrollToSection('contacto')}
               className="block w-full text-left text-gray-300 hover:text-green-400 font-medium py-2"
@@ -161,9 +155,13 @@ export default function Navbar() {
                   </span>
                 )}
               </Link>
-              <button className="p-2 text-gray-300">
+              <Link
+                href="/registrate"
+                className="p-2 text-gray-300"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
                 <User className="w-6 h-6" />
-              </button>
+              </Link>
             </div>
           </div>
         </div>
