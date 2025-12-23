@@ -58,7 +58,7 @@ export default function Navbar() {
           <Link href="/" className="flex items-center space-x-3 group">
             <div className="relative w-12 h-12 transition-all duration-300 group-hover:scale-110">
               <Image
-                src="/logosinfondo.png"
+                src="/logoo.png"
                 alt="GLink Logo"
                 width={48}
                 height={48}
